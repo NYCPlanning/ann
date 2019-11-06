@@ -14,7 +14,7 @@ def evaluate_angles(angle_list):
     irregular_angle = False
     right_angle_count = 0
     for angle in angle_list:
-        if angle >= 88 and angle <= 92:
+        if angle >= 82 and angle <= 98:
             right_angle_count+=1
         elif angle >= 178 and angle <= 182:
             continue
