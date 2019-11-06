@@ -1,9 +1,9 @@
 # db-pluto-research
 PLUTO research projects, ad-hoc reports, etc.
 
-This is a repository geared specifially for researh projects.
+This is a repository geared specifically for research projects.
 
-It should contain files pertaining to research, including SQL statements, Python scripts, .MXD ArcMap files, and Shapefiles.
+It should contain files pertaining to research, including SQL statements, Python scripts, .MXD ArcMap files, and shapefiles.
 
 It should not contain data.
 
