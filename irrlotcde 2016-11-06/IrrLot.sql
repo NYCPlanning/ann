@@ -79,3 +79,14 @@ AND p2.path_3 = 2
 AND p3.path_1 = 1
 AND p3.path_2 = 1
 AND p3.path_3 = 3;
+
+-- See how often the difference between the geometry area and the ST_ORIENTEDENVELOPE area is greater than 100,
+-- if the IRRLOTCODE = 'N'. (It happens pretty often.)
+SELECT bbl, irrlotcode,
+geom,
+ST_Area(geom),
+ST_Area(ST_OrientedEnvelope(geom)),
+ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom) as diff
+from plutofix.pluto191
+where ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom) > 100
+and irrlotcode = 'N';
