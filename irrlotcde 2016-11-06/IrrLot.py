@@ -8,15 +8,15 @@ def get_angle(bbl_hold, path_1_1_hold, path_1_2_hold, path_1_3_hold, path_2_1_ho
     if angle[0][0]:
         angle_list.append(angle[0][0])
     else:
-        print("Angle is null")
+        print("Angle is null ", str(bbl_hold))
 
 def evaluate_angles(angle_list):
     irregular_angle = False
     right_angle_count = 0
     for angle in angle_list:
-        if angle >= 82 and angle <= 98:
+        if angle >= 88 and angle <= 92:
             right_angle_count+=1
-        elif angle >= 178 and angle <= 182:
+        elif (angle >= 178 and angle <= 182) or angle >= 270:
             continue
         else:
             irregular_angle = True
