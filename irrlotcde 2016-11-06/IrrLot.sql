@@ -39,18 +39,22 @@ CREATE TABLE plutofix.irrlot2_irregular (
 -- Now get the multipolygon geometry from PLUTO.
 
 ALTER TABLE plutofix.irrlot2_regular
+ADD COLUMN irrlotcode VARCHAR(1),
 ADD COLUMN geom GEOMETRY(MULTIPOLYGON, 2263);
 
 ALTER TABLE plutofix.irrlot2_irregular
+ADD COLUMN irrlotcode VARCHAR(1),
 ADD COLUMN geom GEOMETRY(MULTIPOLYGON, 2263);
 
 UPDATE plutofix.irrlot2_regular r
-SET geom = p.geom
+SET geom = p.geom,
+irrlotcode = p.irrlotcode
 FROM plutofix.pluto191 p
 WHERE r.bbl = p.bbl;
 
 UPDATE plutofix.irrlot2_irregular i
 SET geom = p.geom
+irrlotcode = p.irrlotcode
 FROM plutofix.pluto191 p
 WHERE i.bbl = p.bbl;
 
