@@ -5,7 +5,7 @@
 import csv
 from matplotlib import rcParams
 rcParams['font.family'] = 'sans-serif'
-rcParams['font.sans-serif'] = ['Consolas']
+rcParams['font.sans-serif'] = ['Inconsolata']
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -34,9 +34,9 @@ with open('landuse.csv') as csv_file:
     ax.bar(r1+width, new_lotarea, width, color='#ff7e00', align='center', label='After Correction')
     ax.ticklabel_format(useOffset=False, style='plain')
 
-    plt.xlabel('Land Use')
-    plt.ylabel('Total Lot Area')
-    plt.title('Lot Area by Land Use Code')
+    plt.xlabel('Land Use', fontweight='bold')
+    plt.ylabel('Total Lot Area', fontweight='bold')
+    plt.title('Lot Area by Land Use Code', fontweight='bold')
     plt.tick_params(labelsize=7)
     plt.xticks(rotation=-20)
     plt.xticks(r1 + width / 2, landuse)
