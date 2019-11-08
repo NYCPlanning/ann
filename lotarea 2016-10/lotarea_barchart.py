@@ -3,6 +3,9 @@
 #
 
 import csv
+from matplotlib import rcParams
+rcParams['font.family'] = 'sans-serif'
+rcParams['font.sans-serif'] = ['Consolas']
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -27,15 +30,17 @@ with open('landuse.csv') as csv_file:
     r1 = np.arange(len(landuse))
 
     ax = plt.subplot(111)
-    ax.bar(r1, old_lotarea, width, color='#ff7e00', align='center', label='Before Correction')
-    ax.bar(r1+width, new_lotarea, width, color='#0080ff', align='center', label='After Correction')
+    ax.bar(r1, old_lotarea, width, color='#0080ff', align='center', label='Before Correction')
+    ax.bar(r1+width, new_lotarea, width, color='#ff7e00', align='center', label='After Correction')
     ax.ticklabel_format(useOffset=False, style='plain')
 
-    plt.xlabel('Land Use Code')
-    plt.ylabel('Total Lot Area (in Billions of Sq. Ft.)')
+    plt.xlabel('Land Use')
+    plt.ylabel('Total Lot Area')
     plt.title('Lot Area by Land Use Code')
+    plt.tick_params(labelsize=7)
+    plt.xticks(rotation=-20)
     plt.xticks(r1 + width / 2, landuse)
-    plt.yticks(np.arange(65000000, 2000000000, 50000000))
+    plt.yticks(np.arange(100000000, 2000000000, 200000000))
     plt.legend(loc='best')
     plt.show()
 
