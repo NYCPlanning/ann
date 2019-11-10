@@ -3,6 +3,7 @@
 #
 
 import csv
+import os
 from matplotlib import rcParams
 rcParams['font.family'] = 'sans-serif'
 rcParams['font.sans-serif'] = ['Inconsolata']
@@ -11,7 +12,10 @@ import numpy as np
 
 print('Starting Module...')
 
-with open('landuse.csv') as csv_file:
+script_dir = os.path.dirname(__file__)  # Script directory
+full_path = os.path.join(script_dir, '../data/landuse.csv')
+
+with open(full_path) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     next(csv_reader)
     read_count = 0
