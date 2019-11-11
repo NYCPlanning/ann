@@ -5,14 +5,13 @@ import csv
 # polygons with more than 4 angles, rather than looking at whether an angle is right or not.
 
 def get_angle(bbl_hold, path_1_1_hold, path_1_2_hold, path_1_3_hold, path_2_1_hold, path_2_2_hold, path_2_3_hold, path_3_1_hold, path_3_2_hold, path_3_3_hold):
-    select_table_query = "SELECT 360 - degrees(ST_Angle(ST_SetSRID(p1.geom, 2263), ST_SetSRID(p2.geom, 2263), ST_SetSRID(p3.geom, 2263))) FROM plutofix.pluto_points p1, plutofix.pluto_points p2, plutofix.pluto_points p3 WHERE p1.bbl = " + str(bbl_hold) + " AND p1.bbl = p2.bbl AND p2.bbl = p3.bbl AND p1.path_1 = " + str(path_1_1_hold) + " AND p1.path_2 = " + str(path_1_2_hold) + " AND p1.path_3 = " + str(path_1_3_hold) + " AND p2.path_1 = " + str(path_2_1_hold) + " AND p2.path_2 = " + str(path_2_2_hold) + " AND p2.path_3 = " + str(path_2_3_hold) + " AND p3.path_1 = " + str(path_3_1_hold) + " AND p3.path_2 = " + str(path_3_2_hold) + " AND p3.path_3 = " + str(path_3_3_hold) + ";"
+    select_table_query = "SELECT 360 - degrees(ST_Angle(ST_SetSRID(p1.geom, 2263), ST_SetSRID(p2.geom, 2263), ST_SetSRID(p3.geom, 2263))) FROM dcp.pluto_points p1, dcp.pluto_points p2, dcp.pluto_points p3 WHERE p1.bbl = '" + str(bbl_hold) + "' AND p1.bbl = p2.bbl AND p2.bbl = p3.bbl AND p1.path_1 = " + str(path_1_1_hold) + " AND p1.path_2 = " + str(path_1_2_hold) + " AND p1.path_3 = " + str(path_1_3_hold) + " AND p2.path_1 = " + str(path_2_1_hold) + " AND p2.path_2 = " + str(path_2_2_hold) + " AND p2.path_3 = " + str(path_2_3_hold) + " AND p3.path_1 = " + str(path_3_1_hold) + " AND p3.path_2 = " + str(path_3_2_hold) + " AND p3.path_3 = " + str(path_3_3_hold) + ";"
     cursor.execute(select_table_query)
     angle = cursor.fetchall()
     if angle[0][0]:
         angle_list.append(angle[0][0])
     else:
-        angle_null_count += 1
-        print("Angle is null")
+        print("Angle is null ", str(bbl_hold))
 
 def evaluate_angles(angle_list):
     angle_count = 0
@@ -52,21 +51,21 @@ try:
                                   password = "aem2420!",
                                   host = "127.0.0.1",
                                   port = "5432",
-                                  database = "testdcp")
+                                  database = "postgres")
 
     cursor = connection.cursor()
 
-    select_table_query = "SELECT bbl, path_1, path_2, path_3 FROM plutofix.pluto_points WHERE path_1 = 1 AND path_2 = 1 ORDER BY bbl, path_1, path_2, path_3;"
+    select_table_query = "SELECT bbl, path_1, path_2, path_3 FROM dcp.pluto_points WHERE path_1 = 1 AND path_2 = 1 ORDER BY bbl, path_1, path_2, path_3;"
     cursor.execute(select_table_query)
     print("Selecting points from pluto 19.1 table using cursor.fetchall")
     pluto_records = cursor.fetchall()
-    read_count = bbl_read_count = regular_count = irregular_count = angle_null_count = 0
+    read_count = bbl_read_count = regular_count = irregular_count = 0
     angle_list = []
     bbl_hold = 0
     path_1_1_hold = path_1_2_hold = path_1_3_hold = path_2_1_hold = path_2_2_hold = path_2_3_hold = path_3_1_hold = path_3_2_hold = path_3_3_hold = 0
 
-    with open('regular.csv', mode='w', newline='') as regular:
-        with open('irregular.csv', mode="w", newline='') as irregular:
+    with open('regular_angles.csv', mode='w', newline='') as regular:
+        with open('irregular_angles.csv', mode="w", newline='') as irregular:
             regular_writer = csv.writer(regular, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             irregular_writer = csv.writer(irregular, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             for row in pluto_records:
@@ -122,7 +121,6 @@ try:
     print("Pluto 19.1 point records read ", read_count)
     print("Regular polygons: ", regular_count)
     print("Irregular polygons: ", irregular_count)
-    print("Null angle count: ", angle_null_count)
 
 except (Exception, psycopg2.Error) as error:
     print("Error while fetching data from PostgreSQL", error)
