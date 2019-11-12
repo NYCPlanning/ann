@@ -2,12 +2,36 @@
 -- Table: yrbuilt.lpc_yrbuilt
 -- New fields start after "geom"
 
--- DROP TABLE dcp.lpc_yrbuilt;
+DROP TABLE dcp.lpc_yrbuilt;
 
 -- 35,909 records selected
 
 CREATE TABLE dcp.lpc_yrbuilt AS
-SELECT * FROM dcp.lpc
+SELECT bin,
+bbl,
+geom,
+borough,
+block,
+lot,
+zipcode,
+address,
+ownername,
+yearbuilt,
+yearalter1,
+yearalter2,
+des_addres,
+circa,
+date_low,
+date_high,
+arch_build,
+own_devel,
+mat_prim,
+use_orig,
+build_type,
+notes,
+newconst,
+hist_dist
+FROM dcp.lpc
 WHERE build_type NOT IN ('Lamppost', 'Parking Lot', 'Garden', 'Bridge',
 'Pier', 'Zoo', 'Pool', 'Other', 'Swimming Pool Structure', 'Restroom',
 'Cemetery Structure', 'Carport', 'Greenhouse', 'Fence', 'Garage and Laundry',
@@ -27,7 +51,7 @@ ADD COLUMN job_number integer,
 ADD COLUMN status character varying(21) COLLATE pg_catalog."default",
 ADD COLUMN status_dat character varying(22) COLLATE pg_catalog."default",
 ADD COLUMN year_built_date_high_diff integer,
-ADD COLUMN yearbuilt_pluto smallint
+ADD COLUMN yearbuilt_pluto smallint;
 
 -- Index: index_bbl_lpc_yrbuilt
 
