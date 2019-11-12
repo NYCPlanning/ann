@@ -1,15 +1,11 @@
 import psycopg2
 import csv
 
-# A script to determine if a lot is regular or not by taking
-# a geometry's points in groups of three, and evaluating the angle size
-# of each. If there are 4 and only 4 right angles, the polygon is regular.
-
-# Input is a table called pluto_points created with the ST_DumpPoints function.
-# See the SQL in the SQL folder.
+# A version of the irregular lot identification script that
+# works with lots defined as regular only
 
 def get_angle(bbl_hold, path_1_1_hold, path_1_2_hold, path_1_3_hold, path_2_1_hold, path_2_2_hold, path_2_3_hold, path_3_1_hold, path_3_2_hold, path_3_3_hold):
-    select_table_query = "SELECT 360 - degrees(ST_Angle(ST_SetSRID(p1.geom, 2263), ST_SetSRID(p2.geom, 2263), ST_SetSRID(p3.geom, 2263))) FROM dcp.pluto_points p1, dcp.pluto_points p2, dcp.pluto_points p3 WHERE p1.bbl = '" + str(bbl_hold) + "' AND p1.bbl = p2.bbl AND p2.bbl = p3.bbl AND p1.path_1 = " + str(path_1_1_hold) + " AND p1.path_2 = " + str(path_1_2_hold) + " AND p1.path_3 = " + str(path_1_3_hold) + " AND p2.path_1 = " + str(path_2_1_hold) + " AND p2.path_2 = " + str(path_2_2_hold) + " AND p2.path_3 = " + str(path_2_3_hold) + " AND p3.path_1 = " + str(path_3_1_hold) + " AND p3.path_2 = " + str(path_3_2_hold) + " AND p3.path_3 = " + str(path_3_3_hold) + ";"
+    select_table_query = "SELECT 360 - degrees(ST_Angle(ST_SetSRID(p1.geom, 2263), ST_SetSRID(p2.geom, 2263), ST_SetSRID(p3.geom, 2263))) FROM dcp.pluto_points_regular p1, dcp.pluto_points_regular p2, dcp.pluto_points_regular p3 WHERE p1.bbl = '" + str(bbl_hold) + "' AND p1.bbl = p2.bbl AND p2.bbl = p3.bbl AND p1.path_1 = " + str(path_1_1_hold) + " AND p1.path_2 = " + str(path_1_2_hold) + " AND p1.path_3 = " + str(path_1_3_hold) + " AND p2.path_1 = " + str(path_2_1_hold) + " AND p2.path_2 = " + str(path_2_2_hold) + " AND p2.path_3 = " + str(path_2_3_hold) + " AND p3.path_1 = " + str(path_3_1_hold) + " AND p3.path_2 = " + str(path_3_2_hold) + " AND p3.path_3 = " + str(path_3_3_hold) + ";"
     cursor.execute(select_table_query)
     angle = cursor.fetchall()
     if angle[0][0]:
@@ -67,7 +63,7 @@ try:
 
     cursor = connection.cursor()
 
-    select_table_query = "SELECT bbl, path_1, path_2, path_3 FROM dcp.pluto_points WHERE path_1 = 1 AND path_2 = 1 ORDER BY bbl, path_1, path_2, path_3;"
+    select_table_query = "SELECT bbl, path_1, path_2, path_3 FROM dcp.pluto_points_regular WHERE path_1 = 1 AND path_2 = 1 ORDER BY bbl, path_1, path_2, path_3;"
     cursor.execute(select_table_query)
     print("Selecting points from pluto 19.1 table using cursor.fetchall")
     pluto_records = cursor.fetchall()
@@ -76,8 +72,8 @@ try:
     bbl_hold = 0
     path_1_1_hold = path_1_2_hold = path_1_3_hold = path_2_1_hold = path_2_2_hold = path_2_3_hold = path_3_1_hold = path_3_2_hold = path_3_3_hold = 0
 
-    with open('regular.csv', mode='w', newline='') as regular:
-        with open('irregular.csv', mode="w", newline='') as irregular:
+    with open('regular_n.csv', mode='w', newline='') as regular:
+        with open('irregular_n.csv', mode="w", newline='') as irregular:
             regular_writer = csv.writer(regular, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             irregular_writer = csv.writer(irregular, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             for row in pluto_records:
