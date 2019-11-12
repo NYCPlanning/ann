@@ -20,7 +20,7 @@ AND p1.numfloors = max.max_numfloors;
 
 -- Get situations where the bldgarea / lotarea exceeds twice the number of floors,
 -- and there is only one building on the lot, and the building's ground elevation
--- does not equal the number of floors.
+-- divided by 10 does not equal the number of floors.
 
 SELECT bbl, numfloors, groundelev, numbldgs, bldgarea, lotarea,
 groundelev / 10 AS floorelev, p.geom AS lot_geom, f.geom AS footprints_geom
