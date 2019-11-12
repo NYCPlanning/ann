@@ -4,7 +4,7 @@
 
 DROP TABLE dcp.lpc_yrbuilt;
 
--- 35,909 records selected
+-- 35,799 records selected
 
 CREATE TABLE dcp.lpc_yrbuilt AS
 SELECT bin,
@@ -32,10 +32,10 @@ notes,
 newconst,
 hist_dist
 FROM dcp.lpc
-WHERE build_type NOT IN ('Lamppost', 'Parking Lot', 'Garden', 'Bridge',
-'Pier', 'Zoo', 'Pool', 'Other', 'Swimming Pool Structure', 'Restroom',
-'Cemetery Structure', 'Carport', 'Greenhouse', 'Fence', 'Garage and Laundry',
-'Roller Coaster', 'Cemetery Gate', 'Gazebo', 'Sign', 'Iron Fence');
+WHERE build_type NOT IN ('Lamppost', 'Parking Lot', 'Garden', 'Bridge', 'Elevated Railroad'
+'Pier', 'Zoo', 'Pool', 'Other', 'Swimming Pool Structure', 'Restroom', 'Vacant Lot', 'Dry Dock',
+'Cemetery Structure', 'Carport', 'Greenhouse', 'Fence', 'Garage and Laundry', 'Gas Station',
+'Roller Coaster', 'Cemetery Gate', 'Gazebo', 'Sign', 'Iron Fence', 'Covered Way', 'Zoo Gates');
 
 -- Add new, empty columns
 
@@ -75,14 +75,14 @@ CREATE INDEX index_lpc_yrbuilt_bin
 UPDATE dcp.lpc_yrbuilt
 SET no_pluto_bbl = 'Y';
 
--- 35686 records updated
+-- 35578 records updated
 UPDATE dcp.lpc_yrbuilt l
 SET no_pluto_bbl = 'N'
 FROM dcp.pluto191 p
 WHERE l.bbl = p.bbl;
 
 -- yearbuilt_pluto, yrbuilt_eq_date_high
--- 35686 records updated
+-- 35578 records updated
 UPDATE dcp.lpc_yrbuilt l
 SET yearbuilt_pluto = p.yearbuilt
 FROM dcp.pluto191 p
@@ -91,7 +91,7 @@ WHERE p.bbl = l.bbl;
 UPDATE dcp.lpc_yrbuilt
 SET yrbuilt_eq_date_high = 'N';
 
--- 2186 records updated
+-- 2189 records updated
 UPDATE dcp.lpc_yrbuilt
 SET yrbuilt_eq_date_high = 'Y'
 WHERE yearbuilt_pluto = date_high;
@@ -100,13 +100,13 @@ WHERE yearbuilt_pluto = date_high;
 UPDATE dcp.lpc_yrbuilt
 SET date_high_eq_0 = 'N';
 
--- 2279 records updated
+-- 2189 records updated
 UPDATE dcp.lpc_yrbuilt
 SET date_high_eq_0 = 'Y'
 WHERE date_high = 0;
 
 -- numbldgs_pluto
--- 31267 records updated
+-- 31248 records updated
 UPDATE dcp.lpc_yrbuilt l
 SET numbldgs_pluto = p.numbldgs
 FROM dcp.pluto191 p
@@ -116,6 +116,7 @@ AND l.yrbuilt_eq_date_high = 'N'
 AND l.date_high_eq_0 = 'N';
 
 -- appdate_pluto
+-- 31248 records updated
 UPDATE dcp.lpc_yrbuilt l
 SET appdate_pluto = CAST(p.appdate AS DATE)
 FROM dcp.pluto191 p
@@ -125,7 +126,7 @@ AND yrbuilt_eq_date_high = 'N'
 AND date_high_eq_0 = 'N';
 
 -- cnstrct_yr_footprints
--- 689 records updated
+-- 684 records updated
 UPDATE dcp.lpc_yrbuilt l
 SET cnstrct_yr_footprints = f.cnstrct_yr
 FROM dcp.bldg_footprints f
@@ -136,7 +137,7 @@ AND yrbuilt_eq_date_high = 'N'
 AND date_high_eq_0 = 'N';
 
 -- job_type, job_number, status, status_dat
--- 43 records updated
+-- 42 records updated
 UPDATE dcp.lpc_yrbuilt l
 SET job_type = h.job_type,
 job_number = h.job_number,
@@ -150,7 +151,7 @@ AND h.bin = l.bin
 AND h.status_dat = (SELECT MAX(h2.status_dat) FROM dcp.housing_development h2 WHERE h2.bin = l.bin);
 
 -- year_built_date_high_diff
--- 31267 records updated
+-- 31248 records updated
 UPDATE dcp.lpc_yrbuilt l
 SET year_built_date_high_diff = yearbuilt_pluto - date_high
 WHERE no_pluto_bbl = 'N'
