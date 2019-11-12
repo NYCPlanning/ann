@@ -1,11 +1,11 @@
 -- Get situations where the bldgarea / lotarea exceeds twice the number of floors
 
-SELECT bbl, bldgarea, lotarea, numfloors,
+SELECT bbl, bldgarea, lotarea, numfloors, address,
 CAST(bldgarea AS NUMERIC) / CAST(lotarea AS NUMERIC) as bldgarea_lotarea_ratio
 FROM dcp.pluto191 p
 WHERE CAST(bldgarea AS NUMERIC) / CAST(lotarea AS NUMERIC) > 2 * CAST(numfloors AS NUMERIC)
 AND CAST(lotarea AS NUMERIC) <> 0
-ORDER BY 5 DESC;
+ORDER BY 6 DESC;
 
 -- Highest number of floors per borough
 
@@ -20,9 +20,10 @@ AND p1.numfloors = max.max_numfloors;
 
 -- Get situations where the bldgarea / lotarea exceeds twice the number of floors,
 -- and there is only one building on the lot, and the building's ground elevation
--- divided by 10 does not equal the number of floors.
+-- divided by 10 does not equal the number of floors. Assumption is that stories in
+-- most buildings are 10 feet.
 
-SELECT bbl, numfloors, groundelev, numbldgs, bldgarea, lotarea,
+SELECT bbl, numfloors, groundelev, numbldgs, bldgarea, lotarea, address,
 groundelev / 10 AS floorelev, p.geom AS lot_geom, f.geom AS footprints_geom
 FROM dcp.pluto191 p,
 dcp.bldg_footprints f
@@ -31,4 +32,4 @@ AND numbldgs = 1
 AND groundelev / 10 <> numfloors
 AND CAST(bldgarea AS NUMERIC) / CAST(lotarea AS NUMERIC) > 2 * CAST(numfloors AS NUMERIC)
 AND CAST(lotarea AS NUMERIC) <> 0
-ORDER BY 7 DESC;
+ORDER BY 8 DESC;
