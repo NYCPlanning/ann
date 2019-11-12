@@ -20,43 +20,14 @@ AND p1.numfloors = max.max_numfloors;
 
 -- Get top 5 numfloors values by borough
 
-SELECT floors.*
-FROM
-((SELECT borough, bbl, address, numfloors
-FROM dcp.pluto191
-WHERE borough = 'MN'
-AND numfloors IS NOT NULL
-ORDER BY numfloors DESC
-LIMIT 5)
-UNION
-(SELECT borough, bbl, address, numfloors
-FROM dcp.pluto191
-WHERE borough = 'BX'
-AND numfloors IS NOT NULL
-ORDER BY numfloors DESC
-LIMIT 5)
-UNION
-(SELECT borough, bbl, address, numfloors
-FROM dcp.pluto191
-WHERE borough = 'BK'
-AND numfloors IS NOT NULL
-ORDER BY numfloors DESC
-LIMIT 5)
-UNION
-(SELECT borough, bbl, address, numfloors
-FROM dcp.pluto191
-WHERE borough = 'QN'
-AND numfloors IS NOT NULL
-ORDER BY numfloors DESC
-LIMIT 5)
-UNION
-(SELECT borough, bbl, address, numfloors
-FROM dcp.pluto191
-WHERE borough = 'SI'
-AND numfloors IS NOT NULL
-ORDER BY numfloors DESC
-LIMIT 5)) AS floors
-ORDER BY 1, 4 DESC;
+SELECT rank_filter.* FROM (
+	SELECT p.borough, p.bbl, p.address, p.numfloors, rank() OVER (
+		PARTITION BY borough
+		ORDER BY numfloors DESC
+	)
+	FROM dcp.pluto191 p
+	WHERE numfloors IS NOT NULL
+) rank_filter WHERE rank <= 5;
 
 -- Get situations where the bldgarea / lotarea exceeds twice the number of floors,
 -- and there is only one building on the lot, and the building's ground elevation
