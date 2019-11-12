@@ -10,6 +10,18 @@ rcParams['font.sans-serif'] = ['Inconsolata']
 import matplotlib.pyplot as plt
 import numpy as np
 
+SMALL_SIZE = 7
+MEDIUM_SIZE = 11
+BIGGER_SIZE = 14
+
+plt.rc('font', size=SMALL_SIZE)
+plt.rc('axes', titlesize=BIGGER_SIZE)     # fontsize of the axes title
+plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('legend', fontsize=MEDIUM_SIZE)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+
 print('Starting Module...')
 
 script_dir = os.path.dirname(__file__)  # Script directory
@@ -41,7 +53,6 @@ with open(full_path) as csv_file:
     plt.xlabel('Land Use', fontweight='bold')
     plt.ylabel('Total Lot Area', fontweight='bold')
     plt.title('Lot Area by Land Use Code', fontweight='bold')
-    plt.tick_params(labelsize=7)
     plt.xticks(rotation=-20)
     plt.xticks(r1 + width / 2, landuse)
     plt.yticks(np.arange(100000000, 2000000000, 200000000))
