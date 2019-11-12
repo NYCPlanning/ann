@@ -28,3 +28,27 @@ ALTER TABLE dcp.pluto_points_regular
 ADD PRIMARY KEY (bbl, path_1, path_2, path_3);
 
 CREATE INDEX pluto_points_regular_geom_idx ON dcp.pluto_points_regular USING GIST (geom);
+
+-- Load these tables using PgAdmin import and CSV files output from Python routine
+
+-- Now get the multipolygon geometry from PLUTO.
+
+ALTER TABLE dcp.irrlot_n_regular
+ADD COLUMN irrlotcode VARCHAR(1),
+ADD COLUMN geom GEOMETRY(MULTIPOLYGON, 2263);
+
+ALTER TABLE dcp.irrlot_n_irregular
+ADD COLUMN irrlotcode VARCHAR(1),
+ADD COLUMN geom GEOMETRY(MULTIPOLYGON, 2263);
+
+UPDATE dcp.irrlot_n_regular r
+SET geom = p.geom,
+irrlotcode = p.irrlotcode
+FROM dcp.pluto191 p
+WHERE r.bbl = p.bbl;
+
+UPDATE dcp.irrlot_n_irregular i
+SET geom = p.geom,
+irrlotcode = p.irrlotcode
+FROM dcp.pluto191 p
+WHERE i.bbl = p.bbl;
