@@ -3,16 +3,21 @@
 #
 
 import csv
+import os
 
 print('Starting Module...')
 
-with open('cama_lottypes.csv') as csv_file:
+script_dir = os.path.dirname(__file__)  # Script directory
+cama_full_path = os.path.join(script_dir, '../data/cama_lottypes.csv')
+combos_full_path = os.path.join(script_dir, '../data/lottype_combos.csv')
+
+with open(cama_full_path) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     next(csv_reader)
     line_count = read_count = write_count = multi_lottype_count = 0
     bbl = ''
 
-    with open('lottype_combos.csv', mode='w', newline='') as lottype_combos_file:
+    with open(combos_full_path, mode='w', newline='') as lottype_combos_file:
         lottype_combos_writer = csv.writer(lottype_combos_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
         for row in csv_reader:
