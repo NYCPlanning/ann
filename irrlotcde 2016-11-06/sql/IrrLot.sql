@@ -87,7 +87,7 @@ SELECT bbl, irrlotcode, lotfront, lotdepth, lotarea,
 geom,
 ST_Area(geom) AS Area_Of_Polygon,
 ST_Area(ST_OrientedEnvelope(geom)) AS Area_of_Envelope,
-ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom) as diff
-from dcp.pluto191
-where ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom) > 20
-and irrlotcode = 'N';
+ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom) AS diff
+FROM dcp.pluto191
+WHERE ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom) > 20
+AND irrlotcode = 'N';
