@@ -21,12 +21,12 @@ AND p1.numfloors = max.max_numfloors;
 -- Get top 5 numfloors values by borough
 
 SELECT rank_filter.* FROM (
-	SELECT p.borough, p.bbl, p.address, p.numfloors, rank() OVER (
-		PARTITION BY borough
-		ORDER BY numfloors DESC
-	)
-	FROM dcp.pluto191 p
-	WHERE numfloors IS NOT NULL
+		SELECT p.borough, p.bbl, p.address, p.numfloors, rank() OVER (
+				PARTITION BY borough
+				ORDER BY numfloors DESC
+		)
+		FROM dcp.pluto191 p
+		WHERE numfloors IS NOT NULL
 ) rank_filter WHERE rank <= 5;
 
 -- Get situations where the bldgarea / lotarea exceeds twice the number of floors,
@@ -35,7 +35,9 @@ SELECT rank_filter.* FROM (
 -- within 10 feet.) Assumption is that stories in most buildings are around 10 feet.
 
 SELECT bbl, numfloors, groundelev, numbldgs, bldgarea, lotarea, address,
-groundelev / 10 AS floorelev, p.geom AS lot_geom, f.geom AS footprints_geom
+groundelev / 10 AS floorelev,
+groundelev / 10 - numfloors AS diff_floorelev_numfloors,
+p.geom AS lot_geom, f.geom AS footprints_geom
 FROM dcp.pluto191 p, dcp.bldg_footprints f
 WHERE p.bbl = f.base_bbl
 AND numbldgs = 1
