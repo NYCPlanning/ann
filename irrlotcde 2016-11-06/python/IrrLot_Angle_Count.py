@@ -1,5 +1,6 @@
 import psycopg2
 import csv
+import os
 
 # A second version of the script to determine if a lot if regular or not. This version will check only for
 # polygons with more than 4 angles, rather than looking at whether an angle is right or not.
@@ -11,7 +12,8 @@ def get_angle(bbl_hold, path_1_1_hold, path_1_2_hold, path_1_3_hold, path_2_1_ho
     if angle[0][0]:
         angle_list.append(angle[0][0])
     else:
-        print("Angle is null ", str(bbl_hold))
+        print("Angle is null ", str(bbl_hold), str(path_1_1_hold), str(path_1_2_hold), str(path_1_3_hold),
+        str(path_2_1_hold), str(path_2_2_hold), str(path_2_3_hold),str(path_3_1_hold), str(path_3_2_hold), str(path_3_3_hold))
 
 def evaluate_angles(angle_list):
     angle_count = 0
@@ -63,9 +65,12 @@ try:
     angle_list = []
     bbl_hold = 0
     path_1_1_hold = path_1_2_hold = path_1_3_hold = path_2_1_hold = path_2_2_hold = path_2_3_hold = path_3_1_hold = path_3_2_hold = path_3_3_hold = 0
+    script_dir = os.path.dirname(__file__)  # Script directory
+    regular_full_path = os.path.join(script_dir, '../output/regular_angles.csv')
+    irregular_full_path = os.path.join(script_dir, '../output/irregular_angles.csv')
 
-    with open('regular_angles.csv', mode='w', newline='') as regular:
-        with open('irregular_angles.csv', mode="w", newline='') as irregular:
+    with open(regular_full_path, mode='w', newline='') as regular:
+        with open(irregular_full_path, mode="w", newline='') as irregular:
             regular_writer = csv.writer(regular, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             irregular_writer = csv.writer(irregular, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             for row in pluto_records:

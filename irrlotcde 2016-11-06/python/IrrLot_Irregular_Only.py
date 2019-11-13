@@ -1,8 +1,10 @@
 import psycopg2
 import csv
+import os
 
 # A version of the regular/irregular lot identification script that
-# works with lots defined as irregular only
+# works with lots sent to us with an irrlotcode of 'Y' only. This is perhaps
+# a more conservative approach than trying to evaluate all polygons.
 
 def get_angle(bbl_hold, path_1_1_hold, path_1_2_hold, path_1_3_hold, path_2_1_hold, path_2_2_hold, path_2_3_hold, path_3_1_hold, path_3_2_hold, path_3_3_hold):
     select_table_query = "SELECT 360 - degrees(ST_Angle(ST_SetSRID(p1.geom, 2263), ST_SetSRID(p2.geom, 2263), ST_SetSRID(p3.geom, 2263))) FROM dcp.pluto_points_irregular p1, dcp.pluto_points_irregular p2, dcp.pluto_points_irregular p3 WHERE p1.bbl = '" + str(bbl_hold) + "' AND p1.bbl = p2.bbl AND p2.bbl = p3.bbl AND p1.path_1 = " + str(path_1_1_hold) + " AND p1.path_2 = " + str(path_1_2_hold) + " AND p1.path_3 = " + str(path_1_3_hold) + " AND p2.path_1 = " + str(path_2_1_hold) + " AND p2.path_2 = " + str(path_2_2_hold) + " AND p2.path_3 = " + str(path_2_3_hold) + " AND p3.path_1 = " + str(path_3_1_hold) + " AND p3.path_2 = " + str(path_3_2_hold) + " AND p3.path_3 = " + str(path_3_3_hold) + ";"
@@ -11,7 +13,8 @@ def get_angle(bbl_hold, path_1_1_hold, path_1_2_hold, path_1_3_hold, path_2_1_ho
     if angle[0][0]:
         angle_list.append(angle[0][0])
     else:
-        print("Angle is null ", str(bbl_hold))
+        print("Angle is null ", str(bbl_hold), str(path_1_1_hold), str(path_1_2_hold), str(path_1_3_hold),
+        str(path_2_1_hold), str(path_2_2_hold), str(path_2_3_hold),str(path_3_1_hold), str(path_3_2_hold), str(path_3_3_hold))
 
 def evaluate_angles(angle_list):
     irregular_angle = False
@@ -71,9 +74,12 @@ try:
     angle_list = []
     bbl_hold = 0
     path_1_1_hold = path_1_2_hold = path_1_3_hold = path_2_1_hold = path_2_2_hold = path_2_3_hold = path_3_1_hold = path_3_2_hold = path_3_3_hold = 0
+    script_dir = os.path.dirname(__file__)  # Script directory
+    regular_full_path = os.path.join(script_dir, '../output/regular_y.csv')
+    irregular_full_path = os.path.join(script_dir, '../output/irregular_y.csv')
 
-    with open('regular_y.csv', mode='w', newline='') as regular:
-        with open('irregular_y.csv', mode="w", newline='') as irregular:
+    with open(regular_full_path, mode='w', newline='') as regular:
+        with open(irregular_full_path, mode="w", newline='') as irregular:
             regular_writer = csv.writer(regular, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             irregular_writer = csv.writer(irregular, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             for row in pluto_records:
