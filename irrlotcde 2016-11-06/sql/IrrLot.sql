@@ -82,12 +82,12 @@ AND p3.path_2 = 1
 AND p3.path_3 = 3;
 
 -- See how often the difference between the geometry area and the ST_ORIENTEDENVELOPE area is greater than 100,
--- if the IRRLOTCODE = 'N'. (It happens pretty often.)
-SELECT bbl, irrlotcode,
+-- if the IRRLOTCODE = 'N'. (It happens pretty often - this query returned 56409 rows.)
+SELECT bbl, irrlotcode, lotfront, lotdepth, lotarea,
 geom,
-ST_Area(geom),
-ST_Area(ST_OrientedEnvelope(geom)),
+ST_Area(geom) AS Area_Of_Polygon,
+ST_Area(ST_OrientedEnvelope(geom)) AS Area_of_Envelope,
 ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom) as diff
 from dcp.pluto191
-where ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom) > 100
+where ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom) > 20
 and irrlotcode = 'N';

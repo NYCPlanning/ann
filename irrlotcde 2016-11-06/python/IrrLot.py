@@ -15,7 +15,8 @@ def get_angle(bbl_hold, path_1_1_hold, path_1_2_hold, path_1_3_hold, path_2_1_ho
     if angle[0][0]:
         angle_list.append(angle[0][0])
     else:
-        print("Angle is null ", str(bbl_hold))
+        print("Angle is null ", str(bbl_hold), str(path_1_1_hold), str(path_1_2_hold), str(path_1_3_hold),
+        str(path_2_1_hold), str(path_2_2_hold), str(path_2_3_hold),str(path_3_1_hold), str(path_3_2_hold), str(path_3_3_hold))
 
 def evaluate_angles(angle_list):
     irregular_angle = False
