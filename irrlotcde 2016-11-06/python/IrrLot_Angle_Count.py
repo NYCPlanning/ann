@@ -18,7 +18,7 @@ def get_angle(bbl_hold, path_1_1_hold, path_1_2_hold, path_1_3_hold, path_2_1_ho
 def evaluate_angles(angle_list):
     angle_count = 0
     for angle in angle_list:
-        if angle >= 178 and angle <= 182:
+        if angle >= 160 and angle <= 200:
             continue
         else:
             angle_count += 1
@@ -73,6 +73,7 @@ try:
         with open(irregular_full_path, mode="w", newline='') as irregular:
             regular_writer = csv.writer(regular, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             irregular_writer = csv.writer(irregular, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
             for row in pluto_records:
 
                 read_count+=1

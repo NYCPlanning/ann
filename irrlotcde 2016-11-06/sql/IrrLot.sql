@@ -1,12 +1,22 @@
 -- Create a table of all Pluto points. There will be one point per row. This will be the input
 -- to a Python routine that determines if a polygon is regular or not.
+
+-- Calculate the percentage of difference between the envelope area and the polygon area. We
+-- will only process the record if the difference is greater than 15%.
+-- I am also trying to exclude sliver lots.
+DROP TABLE dcp.pluto_points;
+DROP TABLE dcp.irrlot_regular;
+DROP TABLE dcp.irrlot_irregular;
+
 CREATE TABLE dcp.pluto_points AS
 SELECT bbl,
 (ST_DumpPoints(geom)).path AS path,
 (ST_DumpPoints(geom)).geom AS geom,
 borough
 FROM dcp.pluto191
-WHERE geom IS NOT NULL;
+WHERE geom IS NOT NULL
+AND lotarea > 10000
+AND (ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom)) / ST_Area(geom) * 100 > 15;
 
 ALTER TABLE dcp.pluto_points
 ADD COLUMN path_1 INTEGER,
@@ -24,6 +34,9 @@ ADD PRIMARY KEY (bbl, path_1, path_2, path_3);
 CREATE INDEX pluto_points_geom_idx ON dcp.pluto_points USING GIST (geom);
 
 -- Run IrrLot Python Routine
+
+-- The CREATE, ALTER, AND UPDATE below are here in case you want to create a Shapefile
+-- you can load into ArcMap.
 
 CREATE TABLE dcp.irrlot_regular (
 	bbl VARCHAR(10),
@@ -62,13 +75,15 @@ WHERE i.bbl = p.bbl;
 -- Use PostGIS Shapefile exporter utility to create shapefile. Review in ArcMap.
 
 -- Standalone query to check angle values based on vertices sets for a given BBL
+-- Used this to check results. It's not a regular part of the process.
+
 SELECT 360 - degrees(ST_Angle(ST_SetSRID(p1.geom, 2263),
 ST_SetSRID(p2.geom, 2263),
 ST_SetSRID(p3.geom, 2263)))
 FROM dcp.pluto_points p1,
 dcp.pluto_points p2,
 dcp.pluto_points p3
-WHERE p1.bbl = 4006360024
+WHERE p1.bbl = '4006360024'
 AND p1.bbl = p2.bbl
 AND p2.bbl = p3.bbl
 AND p1.path_1 = 1
