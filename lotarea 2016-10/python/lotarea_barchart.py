@@ -15,7 +15,7 @@ sns.set()
 SMALL_SIZE = 7
 MEDIUM_SMALL_SIZE = 9
 MEDIUM_SIZE = 11
-BIGGER_SIZE = 18
+BIGGER_SIZE = 16
 
 rcParams['font.family'] = 'sans-serif'
 rcParams['font.sans-serif'] = ['Inconsolata']
