@@ -33,7 +33,7 @@ def y_fmt(tick_val, pos):
     if tick_val > 1000000000:
         val = round(int(tick_val) /1000000000, 1)
         return '{}B'.format(val)
-    if tick_val > 1000000:
+    elif tick_val > 1000000:
         val = round(int(tick_val) /1000000)
         return '{}M'.format(val)
     elif tick_val > 1000:
