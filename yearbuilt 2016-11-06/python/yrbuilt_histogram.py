@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib import rcParams
 import seaborn as sns
 
-sns.set()
+sns.set(rc={'axes.facecolor':'#dddddd'})
 
 SMALL_SIZE = 7
 MEDIUM_SMALL_SIZE = 9
