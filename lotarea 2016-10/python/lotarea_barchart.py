@@ -7,12 +7,15 @@ import os
 from matplotlib import rcParams
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tick
+import seaborn as sns
 import numpy as np
+
+sns.set()
 
 SMALL_SIZE = 7
 MEDIUM_SMALL_SIZE = 9
 MEDIUM_SIZE = 11
-BIGGER_SIZE = 14
+BIGGER_SIZE = 18
 
 rcParams['font.family'] = 'sans-serif'
 rcParams['font.sans-serif'] = ['Inconsolata']
@@ -66,13 +69,16 @@ with open(full_path) as csv_file:
     ax.ticklabel_format(useOffset=False, style='plain')
     ax.yaxis.set_major_formatter(tick.FuncFormatter(y_fmt))
 
-    plt.xlabel('Land Use', fontweight='bold', labelpad=10)
+    plt.xlabel('Land Use', fontweight='bold')
     plt.ylabel('Total Lot Area', fontweight='bold', labelpad=10)
-    plt.title('Lot Area by Land Use Code', fontweight='bold')
+    plt.title('Lot Area by Land Use Code', fontweight='bold', pad=15)
     plt.xticks(rotation=-20)
     plt.xticks(r1 + width / 2, landuse)
     plt.yticks(np.arange(100000000, 2000000000, 200000000))
-    plt.legend(loc='best')
+    plt.legend(loc='upper right', shadow='bool')
+    legend = plt.legend()
+    frame = legend.get_frame()
+    frame.set_facecolor('white')
     plt.show()
 
 print('Module ended.')
