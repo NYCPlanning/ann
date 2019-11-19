@@ -48,9 +48,13 @@ CREATE TABLE dcp.irrlot_irregular (
 	PRIMARY KEY (bbl)
 );
 
--- Load these tables using PgAdmin import and CSV files output from Python routine
-
 -- Now get the multipolygon geometry from PLUTO.
+
+COPY dcp.irrlot_irregular(bbl)
+FROM '/Users/annmorris/Documents/DCP/db-pluto-research/irrlotcde 2016-11-06/output/irregular_angles.csv' DELIMITER ',';
+
+COPY dcp.irrlot_regular(bbl)
+FROM '/Users/annmorris/Documents/DCP/db-pluto-research/irrlotcde 2016-11-06/output/regular_angles.csv' DELIMITER ',';
 
 ALTER TABLE dcp.irrlot_regular
 ADD COLUMN irrlotcode VARCHAR(1),
