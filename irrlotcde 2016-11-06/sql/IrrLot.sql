@@ -50,11 +50,13 @@ CREATE TABLE dcp.irrlot_irregular (
 
 -- Now get the multipolygon geometry from PLUTO.
 
-COPY dcp.irrlot_irregular(bbl)
-FROM '/Users/annmorris/Documents/DCP/db-pluto-research/irrlotcde 2016-11-06/output/irregular_angles.csv' DELIMITER ',';
+-- Load these intermediate tables first
 
-COPY dcp.irrlot_regular(bbl)
-FROM '/Users/annmorris/Documents/DCP/db-pluto-research/irrlotcde 2016-11-06/output/regular_angles.csv' DELIMITER ',';
+--COPY dcp.irrlot_irregular(bbl)
+--FROM '/Users/annmorris/Documents/DCP/db-pluto-research/irrlotcde 2016-11-06/output/irregular_angles.csv' DELIMITER ',';
+
+--COPY dcp.irrlot_regular(bbl)
+--FROM '/Users/annmorris/Documents/DCP/db-pluto-research/irrlotcde 2016-11-06/output/regular_angles.csv' DELIMITER ',';
 
 ALTER TABLE dcp.irrlot_regular
 ADD COLUMN irrlotcode VARCHAR(1),
@@ -76,7 +78,8 @@ irrlotcode = p.irrlotcode
 FROM dcp.pluto191 p
 WHERE i.bbl = p.bbl;
 
--- Use PostGIS Shapefile exporter utility to create shapefile. Review in ArcMap.
+-- Use PostGIS Shapefile exporter utility or QGIS to create shapefile from the irrlot_regular and irrlot_irregular tables.
+-- Review in ArcMap.
 
 -- Standalone query to check angle values based on vertices sets for a given BBL
 -- Used this to check results. It's not a regular part of the process.
