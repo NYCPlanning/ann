@@ -5,24 +5,39 @@
 import csv
 import os
 from matplotlib import rcParams
-rcParams['font.family'] = 'sans-serif'
-rcParams['font.sans-serif'] = ['Inconsolata']
 import matplotlib.pyplot as plt
+import matplotlib.ticker as tick
 import numpy as np
 
 SMALL_SIZE = 7
+MEDIUM_SMALL_SIZE = 9
 MEDIUM_SIZE = 11
 BIGGER_SIZE = 14
 
+rcParams['font.family'] = 'sans-serif'
+rcParams['font.sans-serif'] = ['Inconsolata']
 plt.rc('font', size=SMALL_SIZE)
 plt.rc('axes', titlesize=BIGGER_SIZE)     # fontsize of the axes title
 plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
-plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('xtick', labelsize=MEDIUM_SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=MEDIUM_SMALL_SIZE)    # fontsize of the tick labels
 plt.rc('legend', fontsize=MEDIUM_SIZE)    # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 print('Starting Module...')
+
+def y_fmt(tick_val, pos):
+    if tick_val > 1000000000:
+        val = round(int(tick_val) /1000000000, 1)
+        return '{}B'.format(val)
+    if tick_val > 1000000:
+        val = round(int(tick_val) /1000000)
+        return '{}M'.format(val)
+    elif tick_val > 1000:
+        val = int(tick_val) / 1000
+        return '{}k'.format(val)
+    else:
+        return tick_val
 
 script_dir = os.path.dirname(__file__)  # Script directory
 full_path = os.path.join(script_dir, '../data/landuse.csv')
@@ -49,9 +64,10 @@ with open(full_path) as csv_file:
     ax.bar(r1, old_lotarea, width, color='#0080ff', align='center', label='Before Correction')
     ax.bar(r1+width, new_lotarea, width, color='#ff7e00', align='center', label='After Correction')
     ax.ticklabel_format(useOffset=False, style='plain')
+    ax.yaxis.set_major_formatter(tick.FuncFormatter(y_fmt))
 
-    plt.xlabel('Land Use', fontweight='bold')
-    plt.ylabel('Total Lot Area', fontweight='bold')
+    plt.xlabel('Land Use', fontweight='bold', labelpad=10)
+    plt.ylabel('Total Lot Area', fontweight='bold', labelpad=10)
     plt.title('Lot Area by Land Use Code', fontweight='bold')
     plt.xticks(rotation=-20)
     plt.xticks(r1 + width / 2, landuse)
