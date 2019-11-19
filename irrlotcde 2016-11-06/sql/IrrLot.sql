@@ -82,7 +82,8 @@ WHERE i.bbl = p.bbl;
 -- Review in ArcMap.
 
 -- Standalone query to check angle values based on vertices sets for a given BBL
--- Used this to check results. It's not a regular part of the process.
+-- Used this to check results. It's used to check individual situations and is
+-- not a regular part of the process.
 
 SELECT 360 - degrees(ST_Angle(ST_SetSRID(p1.geom, 2263),
 ST_SetSRID(p2.geom, 2263),
