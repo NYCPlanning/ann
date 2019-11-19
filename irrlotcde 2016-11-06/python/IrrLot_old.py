@@ -2,8 +2,12 @@ import psycopg2
 import csv
 import os
 
-# A second version of the script to determine if a lot if regular or not. This version will check only for
-# polygons with more than 4 angles, rather than looking at whether an angle is right or not.
+# A script to determine if a lot is regular or not by taking
+# a geometry's points in groups of three, and evaluating the angle size
+# of each. If there are 4 and only 4 right angles, the polygon is regular.
+
+# Input is a table called pluto_points created with the ST_DumpPoints function.
+# See the SQL in the SQL folder.
 
 def get_angle(bbl_hold, path_1_1_hold, path_1_2_hold, path_1_3_hold, path_2_1_hold, path_2_2_hold, path_2_3_hold, path_3_1_hold, path_3_2_hold, path_3_3_hold):
     select_table_query = "SELECT 360 - degrees(ST_Angle(ST_SetSRID(p1.geom, 2263), ST_SetSRID(p2.geom, 2263), ST_SetSRID(p3.geom, 2263))) FROM dcp.pluto_points p1, dcp.pluto_points p2, dcp.pluto_points p3 WHERE p1.bbl = '" + str(bbl_hold) + "' AND p1.bbl = p2.bbl AND p2.bbl = p3.bbl AND p1.path_1 = " + str(path_1_1_hold) + " AND p1.path_2 = " + str(path_1_2_hold) + " AND p1.path_3 = " + str(path_1_3_hold) + " AND p2.path_1 = " + str(path_2_1_hold) + " AND p2.path_2 = " + str(path_2_2_hold) + " AND p2.path_3 = " + str(path_2_3_hold) + " AND p3.path_1 = " + str(path_3_1_hold) + " AND p3.path_2 = " + str(path_3_2_hold) + " AND p3.path_3 = " + str(path_3_3_hold) + ";"
@@ -16,19 +20,27 @@ def get_angle(bbl_hold, path_1_1_hold, path_1_2_hold, path_1_3_hold, path_2_1_ho
         str(path_2_1_hold), str(path_2_2_hold), str(path_2_3_hold),str(path_3_1_hold), str(path_3_2_hold), str(path_3_3_hold))
 
 def evaluate_angles(angle_list):
-    angle_count = 0
+    irregular_angle = False
+    right_angle_count = 0
     for angle in angle_list:
-        if angle >= 160 and angle <= 200:
+        if angle >= 88 and angle <= 92:
+            right_angle_count+=1
+        elif (angle >= 178 and angle <= 182) or angle >= 270:
             continue
         else:
-            angle_count += 1
+            irregular_angle = True
+            break
 
-    if angle_count > 4:
+    if right_angle_count == 4:
+        if irregular_angle == False:
+            regular_writer.writerow([bbl_hold])
+            return "regular"
+        else:
+            irregular_writer.writerow([bbl_hold])
+            return "irregular"
+    else:
         irregular_writer.writerow([bbl_hold])
         return "irregular"
-    else:
-        regular_writer.writerow([bbl_hold])
-        return "regular"
 
 def setup_last_angle(angle_list, path_2_1_hold, path_2_2_hold, path_2_3_hold):
     path_1_1_hold = path_2_1_hold
@@ -66,14 +78,13 @@ try:
     bbl_hold = 0
     path_1_1_hold = path_1_2_hold = path_1_3_hold = path_2_1_hold = path_2_2_hold = path_2_3_hold = path_3_1_hold = path_3_2_hold = path_3_3_hold = 0
     script_dir = os.path.dirname(__file__)  # Script directory
-    regular_full_path = os.path.join(script_dir, '../output/regular_angles.csv')
-    irregular_full_path = os.path.join(script_dir, '../output/irregular_angles.csv')
+    regular_full_path = os.path.join(script_dir, '../output/regular.csv')
+    irregular_full_path = os.path.join(script_dir, '../output/irregular.csv')
 
     with open(regular_full_path, mode='w', newline='') as regular:
         with open(irregular_full_path, mode="w", newline='') as irregular:
             regular_writer = csv.writer(regular, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             irregular_writer = csv.writer(irregular, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-
             for row in pluto_records:
 
                 read_count+=1
