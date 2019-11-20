@@ -39,6 +39,6 @@ with open(full_path) as csv_file:
 df = pd.DataFrame({'Decade': decades})
 df.groupby('Decade', as_index=False).size().plot(kind='bar', color="#b22148", width=1)
 plt.xlabel('Decade', fontweight='bold', labelpad=10)
-plt.ylabel('Count', fontweight='bold', labelpad=10)
+plt.ylabel('Frequency', fontweight='bold', labelpad=10)
 plt.title('Year Built by Decade', fontweight='bold', pad=10)
 plt.show()
