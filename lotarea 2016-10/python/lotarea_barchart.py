@@ -71,7 +71,7 @@ with open(full_path) as csv_file:
 
     plt.xlabel('Land Use', fontweight='bold')
     plt.ylabel('Total Lot Area', fontweight='bold', labelpad=10)
-    plt.title('Lot Area by Land Use Code', fontweight='bold', pad=10)
+    plt.title('Lot Area by Land Use Code: PLUTO 19v2', fontweight='bold', pad=10)
     plt.tick_params(bottom=True, left=True)
     plt.xticks(rotation=-25)
     plt.xticks(r1 + width / 2, landuse)
