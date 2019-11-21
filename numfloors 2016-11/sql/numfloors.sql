@@ -1,9 +1,9 @@
 -- Get situations where the bldgarea / lotarea exceeds twice the number of floors
 
 SELECT bbl, bldgarea, lotarea, numfloors, address,
-CAST(bldgarea AS NUMERIC) / CAST(lotarea AS NUMERIC) as bldgarea_lotarea_ratio
+CAST(bldgarea AS NUMERIC) / CAST(lotarea AS NUMERIC) AS bldgarea_lotarea_ratio
 FROM dcp.pluto191 p
-WHERE CAST(bldgarea AS NUMERIC) / CAST(lotarea AS NUMERIC) > 2 * CAST(numfloors AS NUMERIC)
+WHERE CAST(numfloors AS NUMERIC) > (2 * CAST(bldgarea AS NUMERIC) / CAST(lotarea AS NUMERIC)) 
 AND CAST(lotarea AS NUMERIC) <> 0
 ORDER BY 6 DESC;
 
@@ -11,7 +11,7 @@ ORDER BY 6 DESC;
 
 SELECT p1.bbl, p1.address, max.borough, max.max_numfloors
 FROM dcp.pluto191 p1,
-(SELECT borough, MAX(numfloors) as max_numfloors
+(SELECT borough, MAX(numfloors) AS max_numfloors
 FROM dcp.pluto191 p2
 WHERE p2.borough in ('MN', 'BX', 'BK', 'QN', 'SI')
 GROUP BY p2.borough) AS max
@@ -35,13 +35,13 @@ SELECT rank_filter.* FROM (
 -- within 10 feet.) Assumption is that stories in most buildings are around 10 feet.
 
 SELECT bbl, numfloors, groundelev, numbldgs, bldgarea, lotarea, address,
-groundelev / 10 AS floorelev,
-groundelev / 10 - numfloors AS diff_floorelev_numfloors,
+heightroof / 10 AS floorelev,
+heightroof / 10 - numfloors AS diff_floorelev_numfloors,
 p.geom AS lot_geom, f.geom AS footprints_geom
 FROM dcp.pluto191 p, dcp.bldg_footprints f
 WHERE p.bbl = f.base_bbl
 AND numbldgs = 1
-AND (groundelev / 10 - numfloors > 10 OR groundelev / 10 - numfloors < -10)
+AND (heightroof / 10 - numfloors > 10 OR heightroof / 10 - numfloors < -10)
 AND CAST(bldgarea AS NUMERIC) / CAST(lotarea AS NUMERIC) > 2 * CAST(numfloors AS NUMERIC)
 AND CAST(lotarea AS NUMERIC) <> 0
 ORDER BY 8 DESC;
