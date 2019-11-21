@@ -9,13 +9,13 @@ DROP TABLE dcp.irrlot_regular;
 DROP TABLE dcp.irrlot_irregular;
 
 CREATE TABLE dcp.pluto_points AS
-SELECT bbl,
+SELECT "BBL" as bbl,
 (ST_DumpPoints(geom)).path AS path,
 (ST_DumpPoints(geom)).geom AS geom,
 borough
-FROM dcp.pluto191
+FROM dcp.pluto192
 WHERE geom IS NOT NULL
-AND lotarea > 15000
+--AND lotarea > 15000
 AND (ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom)) / ST_Area(geom) * 100 > 15;
 
 ALTER TABLE dcp.pluto_points
@@ -39,12 +39,12 @@ CREATE INDEX pluto_points_geom_idx ON dcp.pluto_points USING GIST (geom);
 -- you can load into ArcMap.
 
 CREATE TABLE dcp.irrlot_regular (
-	bbl VARCHAR(10),
+	bbl NUMERIC,
 	PRIMARY KEY (bbl)
 );
 
 CREATE TABLE dcp.irrlot_irregular (
-	bbl VARCHAR(10),
+	bbl NUMERIC,
 	PRIMARY KEY (bbl)
 );
 
@@ -60,23 +60,43 @@ CREATE TABLE dcp.irrlot_irregular (
 
 ALTER TABLE dcp.irrlot_regular
 ADD COLUMN irrlotcode VARCHAR(1),
+ADD COLUMN lotarea INTEGER,
+ADD COLUMN lotfront NUMERIC,
+ADD COLUMN lotdepth NUMERIC,
+ADD COLUMN front_depth_product NUMERIC,
+ADD COLUMN pluto_shape_area NUMERIC,
 ADD COLUMN geom GEOMETRY(MULTIPOLYGON, 2263);
 
 ALTER TABLE dcp.irrlot_irregular
 ADD COLUMN irrlotcode VARCHAR(1),
+ADD COLUMN lotarea INTEGER,
+ADD COLUMN lotfront NUMERIC,
+ADD COLUMN lotdepth NUMERIC,
+ADD COLUMN front_depth_product NUMERIC,
+ADD COLUMN pluto_shape_area NUMERIC,
 ADD COLUMN geom GEOMETRY(MULTIPOLYGON, 2263);
 
 UPDATE dcp.irrlot_regular r
 SET geom = p.geom,
-irrlotcode = p.irrlotcode
-FROM dcp.pluto191 p
-WHERE r.bbl = p.bbl;
+irrlotcode = p."IrrLotCode",
+lotarea = p."LotArea",
+lotfront = p."LotFront",
+lotdepth = p."LotDepth",
+front_depth_product = p."LotFront" * p."LotDepth",
+pluto_shape_area = p."Shape_Area"
+FROM dcp.pluto192 p
+WHERE r.bbl = p."BBL";
 
 UPDATE dcp.irrlot_irregular i
 SET geom = p.geom,
-irrlotcode = p.irrlotcode
-FROM dcp.pluto191 p
-WHERE i.bbl = p.bbl;
+irrlotcode = p."IrrLotCode",
+lotarea = p."LotArea",
+lotfront = p."LotFront",
+lotdepth = p."LotDepth",
+front_depth_product = p."LotFront" * p."LotDepth",
+pluto_shape_area = p."Shape_Area"
+FROM dcp.pluto192 p
+WHERE i.bbl = p."BBL";
 
 -- Use PostGIS Shapefile exporter utility or QGIS to create shapefile from the irrlot_regular and irrlot_irregular tables.
 -- Review in ArcMap.
