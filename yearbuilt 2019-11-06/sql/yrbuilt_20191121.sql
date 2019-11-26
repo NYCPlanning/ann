@@ -5,6 +5,7 @@
 DROP TABLE dcp.lpc_yrbuilt;
 
 -- 35,799 records selected
+-- dcp.lpc contains data downloaded from Open Data: LPC's "Individual Landmark and Historic Building Database"
 
 CREATE TABLE dcp.lpc_yrbuilt AS
 SELECT *
@@ -53,10 +54,17 @@ CREATE INDEX index_lpc_yrbuilt_bin
     TABLESPACE pg_default;
 
 -- year_desig
+-- dcp.lpc_dc_buildings_sites contains data from open data: "Designated and Calendared Buildings and Sites"
+-- Right now this query is only updating rows where BBL appears once on designated and calendared table.
 UPDATE dcp.lpc_yrbuilt l
-SET year_desig = CAST(EXTRACT(YEAR FROM d.date_desig) as VARCHAR)
-FROM dcp.lpc_districts d
-WHERE d.id = l.district_id;
+SET year_desig = CAST(EXTRACT(YEAR FROM b.date_desda) AS VARCHAR)
+FROM dcp.lpc_dc_buildings_sites b
+WHERE b.bbl IN
+(SELECT b.bbl
+FROM dcp.lpc_dc_buildings_sites b
+GROUP BY b.bbl
+HAVING COUNT(*) = 1)
+AND l.bbl = b.bbl;
 
 -- no_pluto_bbl
 UPDATE dcp.lpc_yrbuilt
