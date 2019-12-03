@@ -53,19 +53,6 @@ CREATE INDEX index_lpc_yrbuilt_bin
     (bin)
     TABLESPACE pg_default;
 
--- year_desig
--- dcp.lpc_dc_buildings_sites contains data from open data: "Designated and Calendared Buildings and Sites"
--- Right now this query is only updating rows where BBL appears once on designated and calendared table.
-UPDATE dcp.lpc_yrbuilt l
-SET year_desig = CAST(EXTRACT(YEAR FROM b.date_desda) AS VARCHAR)
-FROM dcp.lpc_dc_buildings_sites b
-WHERE b.bbl IN
-(SELECT b.bbl
-FROM dcp.lpc_dc_buildings_sites b
-GROUP BY b.bbl
-HAVING COUNT(*) = 1)
-AND l.bbl = b.bbl;
-
 -- no_pluto_bbl
 UPDATE dcp.lpc_yrbuilt
 SET no_pluto_bbl = 'Y';
@@ -153,3 +140,52 @@ SET year_built_date_high_diff = yearbuilt_pluto - date_high
 WHERE no_pluto_bbl = 'N'
 AND yrbuilt_eq_date_high = 'N'
 AND date_high_eq_0 = 'N';
+
+-- year_desig
+-- dcp.lpc_dc_buildings_sites contains data from open data: "Designated and Calendared Buildings and Sites"
+-- Right now this query is only updating rows where BBL appears once on designated and calendared table.
+
+-- For those with more than one record, take the date_desda in this priority: 'Individual Landmark', 'Historic District',
+-- 'Scenic Landmark', 'Interior Landmark'.
+-- Do not try to update records for lots where there is more than one building.
+UPDATE dcp.lpc_yrbuilt l
+SET year_desig = CAST(EXTRACT(YEAR FROM b.date_desda) AS VARCHAR)
+FROM dcp.lpc_dc_buildings_sites b
+WHERE b.bbl IN
+(SELECT b.bbl
+FROM dcp.lpc_dc_buildings_sites b
+GROUP BY b.bbl
+HAVING COUNT(*) = 1)
+AND l.bbl = b.bbl;
+
+UPDATE dcp.lpc_yrbuilt l
+SET year_desig = CAST(EXTRACT(YEAR FROM b.date_desda) AS VARCHAR)
+FROM dcp.lpc_dc_buildings_sites b
+WHERE year_desig IS NULL
+AND b.bbl = l.bbl
+AND l.numbldgs_pluto = 1
+AND b.lm_type = 'Individual Landmark';
+
+UPDATE dcp.lpc_yrbuilt l
+SET year_desig = CAST(EXTRACT(YEAR FROM b.date_desda) AS VARCHAR)
+FROM dcp.lpc_dc_buildings_sites b
+WHERE year_desig IS NULL
+AND b.bbl = l.bbl
+AND l.numbldgs_pluto = 1
+AND b.lm_type = 'Historic District';
+
+UPDATE dcp.lpc_yrbuilt l
+SET year_desig = CAST(EXTRACT(YEAR FROM b.date_desda) AS VARCHAR)
+FROM dcp.lpc_dc_buildings_sites b
+WHERE year_desig IS NULL
+AND b.bbl = l.bbl
+AND l.numbldgs_pluto = 1
+AND b.lm_type = 'Scenic Landmark';
+
+UPDATE dcp.lpc_yrbuilt l
+SET year_desig = CAST(EXTRACT(YEAR FROM b.date_desda) AS VARCHAR)
+FROM dcp.lpc_dc_buildings_sites b
+WHERE year_desig IS NULL
+AND b.bbl = l.bbl
+AND l.numbldgs_pluto = 1
+AND b.lm_type = 'Interior Landmark';
