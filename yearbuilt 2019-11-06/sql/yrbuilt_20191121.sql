@@ -157,7 +157,10 @@ WHERE b.bbl IN
 FROM dcp.lpc_dc_buildings_sites b
 GROUP BY b.bbl
 HAVING COUNT(*) = 1)
-AND l.bbl = b.bbl;
+AND l.bbl = b.bbl
+AND l.no_pluto_bbl = 'N'
+AND l.yrbuilt_eq_date_high = 'N'
+AND l.date_high_eq_0 = 'N';
 
 UPDATE dcp.lpc_yrbuilt l
 SET year_desig = CAST(EXTRACT(YEAR FROM b.date_desda) AS VARCHAR)
@@ -165,7 +168,10 @@ FROM dcp.lpc_dc_buildings_sites b
 WHERE year_desig IS NULL
 AND b.bbl = l.bbl
 AND l.numbldgs_pluto = 1
-AND b.lm_type = 'Individual Landmark';
+AND b.lm_type = 'Individual Landmark'
+AND l.no_pluto_bbl = 'N'
+AND l.yrbuilt_eq_date_high = 'N'
+AND l.date_high_eq_0 = 'N';
 
 UPDATE dcp.lpc_yrbuilt l
 SET year_desig = CAST(EXTRACT(YEAR FROM b.date_desda) AS VARCHAR)
@@ -173,7 +179,10 @@ FROM dcp.lpc_dc_buildings_sites b
 WHERE year_desig IS NULL
 AND b.bbl = l.bbl
 AND l.numbldgs_pluto = 1
-AND b.lm_type = 'Historic District';
+AND b.lm_type = 'Historic District'
+AND l.no_pluto_bbl = 'N'
+AND l.yrbuilt_eq_date_high = 'N'
+AND l.date_high_eq_0 = 'N';
 
 UPDATE dcp.lpc_yrbuilt l
 SET year_desig = CAST(EXTRACT(YEAR FROM b.date_desda) AS VARCHAR)
@@ -181,7 +190,10 @@ FROM dcp.lpc_dc_buildings_sites b
 WHERE year_desig IS NULL
 AND b.bbl = l.bbl
 AND l.numbldgs_pluto = 1
-AND b.lm_type = 'Scenic Landmark';
+AND b.lm_type = 'Scenic Landmark'
+AND l.no_pluto_bbl = 'N'
+AND l.yrbuilt_eq_date_high = 'N'
+AND l.date_high_eq_0 = 'N';
 
 UPDATE dcp.lpc_yrbuilt l
 SET year_desig = CAST(EXTRACT(YEAR FROM b.date_desda) AS VARCHAR)
@@ -189,4 +201,7 @@ FROM dcp.lpc_dc_buildings_sites b
 WHERE year_desig IS NULL
 AND b.bbl = l.bbl
 AND l.numbldgs_pluto = 1
-AND b.lm_type = 'Interior Landmark';
+AND b.lm_type = 'Interior Landmark'
+AND l.no_pluto_bbl = 'N'
+AND l.yrbuilt_eq_date_high = 'N'
+AND l.date_high_eq_0 = 'N';
