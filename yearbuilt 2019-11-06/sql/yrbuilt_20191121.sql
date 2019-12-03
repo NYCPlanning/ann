@@ -143,8 +143,9 @@ AND date_high_eq_0 = 'N';
 
 -- year_desig
 -- dcp.lpc_dc_buildings_sites contains data from open data: "Designated and Calendared Buildings and Sites"
--- Right now this query is only updating rows where BBL appears once on designated and calendared table.
 
+-- Some landmarks will have more than one record, because a building can be designated a landmark more
+-- than once, for instance once as an individual landmark, and once if it's part of a larger Historic district.
 -- For those with more than one record, take the date_desda in this priority: 'Individual Landmark', 'Historic District',
 -- 'Scenic Landmark', 'Interior Landmark'.
 -- Do not try to update records for lots where there is more than one building.
