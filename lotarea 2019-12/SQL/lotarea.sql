@@ -8,7 +8,8 @@ SELECT "BBL",
 "LotArea",
 "LotFront" * "LotDepth" AS "Front x Depth",
 "Shape_Area",
-ABS("Shape_Area" - ("LotFront" * "LotDepth")) AS "Shape_Area / Front x Depth Difference (Absolute value)"
+ABS("Shape_Area" - ("LotFront" * "LotDepth")) AS "Shape_Area / Front x Depth Difference (Absolute value)",
+"IrrLotCode"
 FROM dcp.pluto192
 WHERE (ROUND("LotDepth" * "LotFront") < "LotArea" - 100
 OR ROUND("LotDepth" * "LotFront") > "LotArea" + 100)
