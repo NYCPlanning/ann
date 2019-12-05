@@ -19,23 +19,27 @@ ORDER BY 7;
 
 -- This was not requested, but perhaps a summary by landuse code would be of interest.
 
-SELECT "LandUse",
-SUM("Shape_Area" - "LotArea") AS "LotArea Difference"
-FROM dcp.pluto192
-WHERE (ROUND("LotDepth" * "LotFront") < "LotArea" - 100
-OR ROUND("LotDepth" * "LotFront") > "LotArea" + 100)
-AND (ROUND("LotDepth" * "LotFront") > (ROUND("Shape_Area") - 100)
-AND (ROUND("LotDepth" * "LotFront") < (ROUND("Shape_Area") + 100)))
-GROUP BY "LandUse"
-ORDER BY "LandUse";
-
--- Add the count
-
-SELECT "LandUse", COUNT(*) AS "Records Affected"
-FROM dcp.pluto192
-WHERE (ROUND("LotDepth" * "LotFront") < "LotArea" - 100
-OR ROUND("LotDepth" * "LotFront") > "LotArea" + 100)
-AND (ROUND("LotDepth" * "LotFront") > (ROUND("Shape_Area") - 100)
-AND (ROUND("LotDepth" * "LotFront") < (ROUND("Shape_Area") + 100)))
-GROUP BY "LandUse"
-ORDER BY "LandUse";
+SELECT Differences."LandUse",
+def.def AS "Definition",
+Differences."LotArea Difference",
+Counts."Records Affected"
+FROM dcp.landuse_definitions def,
+    (SELECT "LandUse",
+      SUM("Shape_Area" - "LotArea") AS "LotArea Difference"
+      FROM dcp.pluto192
+      WHERE (ROUND("LotDepth" * "LotFront") < "LotArea" - 100
+      OR ROUND("LotDepth" * "LotFront") > "LotArea" + 100)
+      AND (ROUND("LotDepth" * "LotFront") > (ROUND("Shape_Area") - 100)
+      AND (ROUND("LotDepth" * "LotFront") < (ROUND("Shape_Area") + 100)))
+      GROUP BY "LandUse"
+      ORDER BY "LandUse") AS Differences,
+    (SELECT "LandUse", COUNT(*) AS "Records Affected"
+      FROM dcp.pluto192
+      WHERE (ROUND("LotDepth" * "LotFront") < "LotArea" - 100
+      OR ROUND("LotDepth" * "LotFront") > "LotArea" + 100)
+      AND (ROUND("LotDepth" * "LotFront") > (ROUND("Shape_Area") - 100)
+      AND (ROUND("LotDepth" * "LotFront") < (ROUND("Shape_Area") + 100)))
+      GROUP BY "LandUse"
+      ORDER BY "LandUse") AS Counts
+WHERE Differences."LandUse" = Counts."LandUse"
+AND Differences."LandUse" = def.landuse;
