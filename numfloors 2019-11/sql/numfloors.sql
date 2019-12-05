@@ -53,11 +53,27 @@ ORDER BY 8 DESC;
 -- the extreme outliers.
 SELECT "BBL", p."Borough", p."Address", p."NumFloors", borough_mean, p."NumFloors" / borough_mean AS "Percent of Mean"
 FROM dcp.pluto192 p,
-	(SELECT "Borough", AVG("NumFloors") AS borough_mean
-	FROM dcp.pluto192
-	WHERE "NumFloors" > 0 AND "NumFloors" IS NOT NULL
-	GROUP BY "Borough") AS borough_mean
+		(SELECT "Borough", AVG("NumFloors") AS borough_mean
+		FROM dcp.pluto192
+		WHERE "NumFloors" > 0 AND "NumFloors" IS NOT NULL
+		GROUP BY "Borough") AS borough_mean
 WHERE p."Borough" = borough_mean."Borough"
 AND "NumFloors" > 0 AND "NumFloors" IS NOT NULL
 ORDER BY 6 DESC
+LIMIT 100;
+
+-- Outliers with zScores.
+SELECT p."BBL",
+p."Borough",
+p."Address",
+p."NumFloors",
+((p."NumFloors" - Average) /  Std) AS "zScore"
+FROM dcp.pluto192 p,
+		(SELECT p2."Borough" as boro, AVG(p2."NumFloors") AS Average, stddev(p2."NumFloors") AS Std
+		FROM dcp.pluto192 p2
+		WHERE p2."NumFloors" IS NOT NULL AND p2."NumFloors" > 0
+		GROUP BY p2."Borough") AS std_borough
+WHERE p."Borough" = std_borough.boro
+AND p."NumFloors" IS NOT NULL AND p."NumFloors" > 0
+ORDER BY 5 DESC
 LIMIT 100;
