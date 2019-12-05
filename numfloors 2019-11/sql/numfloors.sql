@@ -45,3 +45,19 @@ AND (heightroof / 10 - "NumFloors" > 10 OR heightroof / 10 - "NumFloors" < -10)
 AND CAST("BldgArea" AS NUMERIC) / CAST("LotArea" AS NUMERIC) > 2 * CAST("NumFloors" AS NUMERIC)
 AND CAST("LotArea" AS NUMERIC) <> 0
 ORDER BY 8 DESC;
+
+-- Calculate the mean number of floors for each borough,
+-- as well as the percentage of the mean that each number
+-- of floors represents. Sort the result set by percentages,
+-- largest percentages first. This should help to identify
+-- the extreme outliers.
+SELECT "BBL", p."Borough", p."Address", p."NumFloors", borough_mean, p."NumFloors" / borough_mean AS "Percent of Mean"
+FROM dcp.pluto192 p,
+	(SELECT "Borough", AVG("NumFloors") AS borough_mean
+	FROM dcp.pluto192
+	WHERE "NumFloors" > 0 AND "NumFloors" IS NOT NULL
+	GROUP BY "Borough") AS borough_mean
+WHERE p."Borough" = borough_mean."Borough"
+AND "NumFloors" > 0 AND "NumFloors" IS NOT NULL
+ORDER BY 6 DESC
+LIMIT 100;
