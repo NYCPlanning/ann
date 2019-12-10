@@ -15,7 +15,7 @@ SELECT "BBL" as bbl,
 borough
 FROM dcp.pluto192
 WHERE geom IS NOT NULL
---AND lotarea > 15000
+AND lotarea > 15000
 AND (ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom)) / ST_Area(geom) * 100 > 15;
 
 ALTER TABLE dcp.pluto_points
