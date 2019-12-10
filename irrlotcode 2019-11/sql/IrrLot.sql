@@ -4,18 +4,18 @@
 -- Calculate the percentage of difference between the envelope area and the polygon area. We
 -- will only process the record if the difference is greater than 15%.
 -- I am also trying to exclude sliver lots.
-DROP TABLE dcp.pluto_points;
-DROP TABLE dcp.irrlot_regular;
-DROP TABLE dcp.irrlot_irregular;
+DROP TABLE IF EXISTS dcp.pluto_points,
+	dcp.irrlot_regular,
+	dcp.irrlot_irregular;
 
 CREATE TABLE dcp.pluto_points AS
 SELECT "BBL" as bbl,
 (ST_DumpPoints(geom)).path AS path,
 (ST_DumpPoints(geom)).geom AS geom,
-borough
+"Borough" as borough
 FROM dcp.pluto192
 WHERE geom IS NOT NULL
-AND lotarea > 15000
+AND "LotArea" > 15000
 AND (ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom)) / ST_Area(geom) * 100 > 15;
 
 ALTER TABLE dcp.pluto_points
@@ -40,11 +40,25 @@ CREATE INDEX pluto_points_geom_idx ON dcp.pluto_points USING GIST (geom);
 
 CREATE TABLE dcp.irrlot_regular (
 	bbl NUMERIC,
+	irrlotcode VARCHAR(1),
+	lotarea INTEGER,
+	lotfront NUMERIC,
+	lotdepth NUMERIC,
+	front_depth_product NUMERIC,
+	pluto_shape_area NUMERIC,
+	geom GEOMETRY(MULTIPOLYGON, 2263),
 	PRIMARY KEY (bbl)
 );
 
 CREATE TABLE dcp.irrlot_irregular (
 	bbl NUMERIC,
+	irrlotcode VARCHAR(1),
+	lotarea INTEGER,
+	lotfront NUMERIC,
+	lotdepth NUMERIC,
+	front_depth_product NUMERIC,
+	pluto_shape_area NUMERIC,
+	geom GEOMETRY(MULTIPOLYGON, 2263),
 	PRIMARY KEY (bbl)
 );
 
@@ -57,24 +71,6 @@ CREATE TABLE dcp.irrlot_irregular (
 
 --COPY dcp.irrlot_regular(bbl)
 --FROM '/Users/annmorris/Documents/DCP/db-pluto-research/irrlotcde 2016-11-06/output/regular_angles.csv' DELIMITER ',';
-
-ALTER TABLE dcp.irrlot_regular
-ADD COLUMN irrlotcode VARCHAR(1),
-ADD COLUMN lotarea INTEGER,
-ADD COLUMN lotfront NUMERIC,
-ADD COLUMN lotdepth NUMERIC,
-ADD COLUMN front_depth_product NUMERIC,
-ADD COLUMN pluto_shape_area NUMERIC,
-ADD COLUMN geom GEOMETRY(MULTIPOLYGON, 2263);
-
-ALTER TABLE dcp.irrlot_irregular
-ADD COLUMN irrlotcode VARCHAR(1),
-ADD COLUMN lotarea INTEGER,
-ADD COLUMN lotfront NUMERIC,
-ADD COLUMN lotdepth NUMERIC,
-ADD COLUMN front_depth_product NUMERIC,
-ADD COLUMN pluto_shape_area NUMERIC,
-ADD COLUMN geom GEOMETRY(MULTIPOLYGON, 2263);
 
 UPDATE dcp.irrlot_regular r
 SET geom = p.geom,

@@ -24,10 +24,10 @@ def evaluate_angles(angle_list):
             angle_count += 1
 
     if angle_count > 4:
-        irregular_writer.writerow([bbl_hold])
+        irregular_writer.writerow([bbl_hold,"","","","","","",""])
         return "irregular"
     else:
-        regular_writer.writerow([bbl_hold])
+        regular_writer.writerow([bbl_hold,"","","","","","",""])
         return "regular"
 
 def setup_last_angle(angle_list, path_2_1_hold, path_2_2_hold, path_2_3_hold):
