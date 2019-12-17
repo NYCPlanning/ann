@@ -12,16 +12,19 @@ CREATE TABLE dcp.pluto_points AS
 SELECT "BBL" as bbl,
 (ST_DumpPoints(geom)).path AS path,
 (ST_DumpPoints(geom)).geom AS geom,
-"Borough" as borough
+"Borough" as borough,
+path_1 INTEGER,
+path_2 INTEGER,
+path_3 INTEGER
 FROM dcp.pluto192
 WHERE geom IS NOT NULL
 AND "LotArea" > 15000
 AND (ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom)) / ST_Area(geom) * 100 > 15;
 
-ALTER TABLE dcp.pluto_points
-ADD COLUMN path_1 INTEGER,
-ADD COLUMN path_2 INTEGER,
-ADD COLUMN path_3 INTEGER;
+--ALTER TABLE dcp.pluto_points
+--ADD COLUMN path_1 INTEGER,
+--ADD COLUMN path_2 INTEGER,
+--ADD COLUMN path_3 INTEGER;
 
 UPDATE dcp.pluto_points
 SET path_1 = path[1]::int,
