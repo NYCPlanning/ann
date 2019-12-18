@@ -21,11 +21,6 @@ WHERE geom IS NOT NULL
 AND "LotArea" > 15000
 AND (ST_Area(ST_OrientedEnvelope(geom)) - ST_Area(geom)) / ST_Area(geom) * 100 > 15;
 
-UPDATE dcp.pluto_points
-SET path_1 = path[1]::int,
-path_2 = path[2]::int,
-path_3 = path[3]::int;
-
 ALTER TABLE dcp.pluto_points
 ADD PRIMARY KEY (bbl, path_1, path_2, path_3);
 
