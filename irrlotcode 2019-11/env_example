@@ -1,0 +1,2 @@
+EDMDB="postgresql://your_userid:your_password@localhost:5432/your_database"
+EDMCONN="host=localhost dbname=your_database user=your_userid password=your_password"
