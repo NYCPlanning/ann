@@ -10,6 +10,16 @@ landmarks, but it happens).</p>
 <p>As of this writing, this process produces a file for further verification.
 It does not directly make any corrections to PLUTO.</p>
 
+<h4>Outstanding questions as of 12-2019</h4>
+
+<ul>
+<li>Is it always appropriate to take the historic district designation date, or
+should we be taking other designation dates (e.g. individual landmark) into consideration?</li>
+<li>Do we need to bypass non-standard building types such as lamppost, or garden? There is
+a list of non-standard types in sql/yrbuilt_filter_bldg_types.sql.</li>
+<li>We may wish to solicit DOB input before we proceed with production fixes.</li>
+</ul>
+
 <h4>What You Need</h4>
 
 <ol>
