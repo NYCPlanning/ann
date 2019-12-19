@@ -20,5 +20,5 @@ Calendared Buildings and Sites." Available on <a href="https://data.cityofnewyor
 <li><strong>DOB Footprints</strong> We obtain CNSTRCT_YR from footprints, provided it is
 greater than or equal to 1965.</li>
 <li><strong>Housing Development</strong> New buildings and demolitions from the Housing
-Development database. Downloads available from the <a href="https://capitalplanning.nyc.gov/">Capital Planning Platform</a>.</li>
+Development database. Downloads available from the <a href="https://capitalplanning.nyc.gov/">Capital Planning Platform</a>. (Log in and see "New Housing Developments.")</li>
 </ol>
