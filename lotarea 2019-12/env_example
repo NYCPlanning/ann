@@ -1,0 +1,1 @@
+EDMDB="postgresql://your_userid:your_password@localhost:5432/your_database"

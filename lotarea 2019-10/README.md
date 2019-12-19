@@ -20,4 +20,5 @@ and one after. The logic will SUM lotarea values as well as ESRI Shape_Area valu
 <li><strong>A landuse definition table.</strong> See the irrlotcode 2019-11/sql folder in this repository for the DDL.</li>
 <li><strong>Various Python modules.</strong> See the first cell in the notebook for  
 a list.</li>
+<li><strong>An .env file.</strong></li>
 </ol>
