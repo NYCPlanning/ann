@@ -1,6 +1,7 @@
 import psycopg2
 import csv
 import os
+from dotenv import load_dotenv
 
 # A second version of the script to determine if a lot if regular or not. This version will check only for
 # polygons with more than 4 angles, rather than looking at whether an angle is right or not.
@@ -49,11 +50,12 @@ def last_angle(angle_list, bbl_hold, path_1_1_hold, path_1_2_hold, path_1_3_hold
     return result
 
 try:
-    connection = psycopg2.connect(user = "postgres",
-                                  password = "aem2420!",
-                                  host = "127.0.0.1",
-                                  port = "5432",
-                                  database = "postgres")
+    load_dotenv()
+    connection = psycopg2.connect(user = os.getenv("EDMUSER"),
+                                password = os.getenv("EDMPW"),
+                                host = os.getenv("EDMHOST"),
+                                port = os.getenv("EDMPORT"),
+                                database = os.getenv("EDMDATA"))
 
     cursor = connection.cursor()
 
