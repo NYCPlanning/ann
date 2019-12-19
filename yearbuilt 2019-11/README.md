@@ -34,4 +34,5 @@ greater than or equal to 1965.</li>
 <li><strong>Housing Development.</strong> New buildings and demolitions from the Housing
 Development database. Downloads available from the <a href="https://capitalplanning.nyc.gov/">Capital Planning Platform</a>. (Log in and see "New Housing Developments.")</li>
 <li><strong>A .env file.</strong> See env_example in this repository.</li>
+<li><strong>Various Python modules.</strong> See the first cell in the notebook for a list.</li>
 </ol>
