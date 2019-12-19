@@ -1,27 +1,23 @@
 <h3>lotarea 2019-10</h3>
 
-This is for a simple lotarea update using the ESRI Shape_Area.
+<p>This is for a simple lotarea update using the ESRI Shape_Area, a
+change was that was first implemented for PLUTO 19v2.
 If the PLUTO lotarea is zero, we update it using the Shape_Area.
-We then create before and after breakout reports.
+We then create before and after breakout reports.</p>
 
-There is also a python script to create a barchart of before
-and after lotarea amounts, by land use code.
+<p>There is also a python script to create a bar chart of before
+and after lotarea amounts, by land use code.</p>
 
-1. lotarea.sql identifies PLUTO records where the lotarea is zero,
-and updates these with the shape area. These are rounded to the nearest
-digit as lotarea does not allow for decimal places to the right of
-the decimal point.
+<p>The breakout reports and bar chart were converted to a Jupyter Notebook
+12/2019.</p>
 
-Having updated the lotarea, the sql proceeds to create several
-breakout reports: by land use code, by building class, by borough,
-in addition to summary totals. These queries will create database
-views. The land use view may be used for barchart creation.
+<h4>What You Need</h4>
 
-2. lotarea_barchart.py can be run on the command line as follows:
-
-python3 lotarea_barchart.py
-
-Before you run it, you need a landuse.csv file such as the one in
-the data directory in this repository. The necessary data should
-be in the view created by lotarea.sql, lotarea_comparison_landuse,
-and it will need to reside in the data folder.
+<ol>
+<li><strong>PLUTO.</strong> A Postgres copy of PLUTO before the lotarea updates.
+The logic will SUM lotarea values as well as ESRI Shape_Area values, and compute
+the differences.</li>
+<li><strong>A landuse definition table.</strong> See the irrlotcode 2019-11/sql folder in this repository for DDL.</li>
+<li><strong>Various Python modules.</strong> See the first cell in the notebook for  
+a list.</li>
+</ol>
