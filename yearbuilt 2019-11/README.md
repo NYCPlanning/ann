@@ -1,8 +1,8 @@
 <h3>yearbuilt 2019-11</h3>
 
 <p>This is an effort to research and hopefully correct longstanding issues
-with PLUTO's yearbuilt field. Since LPC believes it substantially has the
-correct dates, The plan is to correct it using LPC's date_high,
+with PLUTO's YearBuilt field. Since LPC believes it substantially has the
+correct dates, the plan is to correct PLUTO's YearBuilt using LPC's Date_High,
 provided that there is only one building on a lot.</p>
 
 <p>As of this writing, this process produces a file for further verification.
