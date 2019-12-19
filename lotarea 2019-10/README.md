@@ -9,7 +9,8 @@ We then create before and after breakout reports.</p>
 and after lotarea amounts, by land use code.</p>
 
 <p>The breakout reports and bar chart were converted to a Jupyter Notebook
-12/2019.</p>
+12/2019. This supercedes the SQL and Python bar chart module, which were used
+at production time.</p>
 
 <h4>What You Need</h4>
 
