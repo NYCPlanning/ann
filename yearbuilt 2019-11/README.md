@@ -3,7 +3,9 @@
 <p>This is an effort to research and hopefully correct longstanding issues
 with PLUTO's YearBuilt field. Since LPC believes it substantially has the
 correct dates, the plan is to correct PLUTO's YearBuilt using LPC's Date_High,
-provided that there is only one building on a lot.</p>
+provided that there is only one building on a lot. This is unless we have
+reason to believe the building has been demolished and/or rebuilt (rare with
+landmarks, but it happens).</p>
 
 <p>As of this writing, this process produces a file for further verification.
 It does not directly make any corrections to PLUTO.</p>
