@@ -15,7 +15,7 @@ It does not directly make any corrections to PLUTO.</p>
 is derived from LPC's "Individual Landmark and Historic Building Database," available on <a
 href="https://data.cityofnewyork.us/Housing-Development/LPC-Individual-Landmark-and-Historic-District-Buil/7mgd-s57w">NYC Open Data</a>.</li>
 <li><strong>lpc_dc_buildings_sites.</strong> Landmarks table, from LPC's "Designated and
-Calendared Buildings and Sites." Available on <a href="https://data.cityofnewyork.us/Housing-Development/Designated-and-Calendared-Buildings-and-Sites/ncre-qhxs">NYC Open Data</a>.</li>
+Calendared Buildings and Sites." Available on <a href="https://data.cityofnewyork.us/Housing-Development/Designated-and-Calendared-Buildings-and-Sites/ncre-qhxs">NYC Open Data</a>. This is used for the designation year.</li>
 <li><strong>PLUTO</strong> We get several fields from PLUTO, including YearBuilt, NumBldgs, and AppDate.</li>
 <li><strong>DOB Footprints</strong> We obtain CNSTRCT_YR from footprints, provided it is
 greater than or equal to 1965.</li>
