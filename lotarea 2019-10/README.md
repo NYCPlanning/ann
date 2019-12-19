@@ -15,9 +15,8 @@ at production time.</p>
 <h4>What You Need</h4>
 
 <ol>
-<li><strong>PLUTO.</strong> A Postgres copy of PLUTO before the lotarea updates.
-The logic will SUM lotarea values as well as ESRI Shape_Area values, and compute
-the differences.</li>
+<li><strong>PLUTO.</strong> Two versions: one before corrections have been applied,
+and one after. The logic will SUM lotarea values as well as ESRI Shape_Area values, and compute the differences.</li>
 <li><strong>A landuse definition table.</strong> See the irrlotcode 2019-11/sql folder in this repository for the DDL.</li>
 <li><strong>Various Python modules.</strong> See the first cell in the notebook for  
 a list.</li>
