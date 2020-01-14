@@ -31,7 +31,7 @@ WHERE path_3 IS NULL;
 
 -- Create a table of block assemblages
 CREATE TABLE dcp.block_assemblages AS
-SELECT "BBL", ST_AsText(geom)
+SELECT "BBL", ST_AsText(a.geom)
 FROM dcp.pluto192 a,
 dcp.blocks b
 WHERE ST_Equals(a.geom, b.geom);
@@ -52,7 +52,7 @@ a."Lot" as lot,
 (ST_DumpPoints(a.geom)).path[2] AS path_2,
 (ST_DumpPoints(a.geom)).path[3] AS path_3
 FROM dcp.pluto192 a, dcp.blocks b
-WHERE geom IS NOT NULL
+WHERE a.geom IS NOT NULL
 AND NOT ST_Equals(a.geom, b.geom);
 
 -- Primary keys and indexes for points tables.
