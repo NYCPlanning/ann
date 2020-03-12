@@ -98,3 +98,72 @@ SELECT d.bbl,
 	d.geom
 FROM demolitions d
 ORDER BY 1, 5, 6;
+
+-- Query as of 3/12/2020 with building footprints check
+WITH new_buildings AS (
+SELECT CAST(p.bbl AS TEXT) as bbl,
+	p.address,
+	p.yearbuilt,
+	p.numbldgs,
+	h.job_type,
+	h.job_status,
+	SUBSTRING(h.date_complete,1,4) AS status_year,
+	f.mpluto_bbl,
+	p.geom
+	FROM dcp.housing h, dcp.pluto201 p
+	LEFT JOIN dcp.footprints f
+	ON CAST(p.bbl AS TEXT) = f.mpluto_bbl
+	WHERE job_type = 'New Building'
+	AND job_status = 'Complete'
+	AND h.date_complete = (SELECT MAX(date_complete)
+							FROM dcp.housing h1
+							WHERE h1.bbl = h.bbl
+							AND h1.job_type = h.job_type
+							AND h1.job_status = h.job_status)
+	AND CAST(p.bbl AS TEXT) = h.bbl
+  AND p.yearbuilt = 0
+  AND p.numbldgs = 1
+), demolitions AS (
+	SELECT n.bbl,
+	n.address,
+	n.yearbuilt,
+	n.numbldgs,
+	h.job_type,
+	h.job_status,
+	SUBSTRING(h.date_filed,7,4) AS status_year,
+	f.mpluto_bbl,
+	n.geom
+	FROM dcp.housing h, new_buildings n
+	LEFT JOIN dcp.footprints f
+	ON CAST(n.bbl AS TEXT) = f.mpluto_bbl
+	WHERE h.job_type = 'Demolition'
+	AND h.job_status = 'Complete (demolition)'
+	AND h.date_filed = (SELECT MAX(h1.date_filed)
+							FROM dcp.housing h1
+							WHERE h1.bbl = h.bbl
+							AND h1.job_type = h.job_type
+							AND h1.job_status = h.job_status)
+	AND n.bbl = h.bbl
+)
+SELECT DISTINCT n.bbl,
+	n.address,
+	n.yearbuilt,
+	n.numbldgs,
+	n.job_type,
+	n.job_status,
+	n.status_year,
+	n.mpluto_bbl,
+	n.geom
+FROM new_buildings n
+UNION ALL
+SELECT d.bbl,
+	d.address,
+	d.yearbuilt,
+	d.numbldgs,
+	d.job_type,
+	d.job_status,
+	d.status_year,
+	d.mpluto_bbl,
+	d.geom
+FROM demolitions d
+ORDER BY 1, 5, 6;
