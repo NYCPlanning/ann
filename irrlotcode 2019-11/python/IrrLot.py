@@ -68,11 +68,11 @@ try:
     bbl_hold = 0
     path_1_1_hold = path_1_2_hold = path_1_3_hold = path_2_1_hold = path_2_2_hold = path_2_3_hold = path_3_1_hold = path_3_2_hold = path_3_3_hold = 0
     script_dir = os.path.dirname(__file__)  # Script directory
-    regular_full_path = os.path.join(script_dir, '../output/regular_angles.csv')
-    irregular_full_path = os.path.join(script_dir, '../output/irregular_angles.csv')
+    regular_path = os.path.join(script_dir, '../output/regular_lots.csv')
+    irregular_path = os.path.join(script_dir, '../output/irregular_lots.csv')
 
-    with open(regular_full_path, mode='w', newline='') as regular:
-        with open(irregular_full_path, mode="w", newline='') as irregular:
+    with open(regular_path, mode='w', newline='') as regular:
+        with open(irregular_path, mode="w", newline='') as irregular:
             regular_writer = csv.writer(regular, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             irregular_writer = csv.writer(irregular, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
