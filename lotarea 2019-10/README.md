@@ -1,6 +1,6 @@
-<h3>lotarea 2019-10</h3>
+<h3>LotArea 2019-10</h3>
 
-<p>This is for a simple lotarea update using the ESRI Shape_Area, a
+<p>This is for a simple LotArea update using the ESRI Shape_Area, a
 change was that was first implemented for PLUTO 19v2.
 If the PLUTO lotarea is zero, we update it using the Shape_Area.
 We then create before and after breakout reports.</p>

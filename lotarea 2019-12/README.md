@@ -1,4 +1,4 @@
-<h3>lotarea 2019-12</h3>
+<h3>LotArea 2019-12</h3>
 
 <p>Here I am trying to find records where the lot front * the lot depth is not
 close to the lot area value, but is reasonably close to the ESRI Shape_Area's value.</p>
