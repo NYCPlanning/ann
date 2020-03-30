@@ -1,19 +1,16 @@
-<h3>NumBldgs 2020-03</h3>
+<h3>NumFloors 2020-03</h3>
 
-<p>This was an effort to determine how often the number of buildings on a lot differs between PLUTO
-(derived from GeoSupport) and building footprints, and how often one or the other is correct.</p>
+<p>Here I compared PLUTO's NumFloors field to a derived number of floors from building footprints.
+We derived the number of floors by dividing the heightroof field by 10 or 12 feet, depending on the land use code assigned to the lot.</p>
 
-<p>There is SQL here to group the buildings from building footprints by lot, and compare that
-result to NumBldgs. I verified the correct source using ZoLa, Google Maps, and CycloMedia.</p>
+<p>After filtering the results using a certain threshold of error, I verified the correct number  of floors using CycloMedia, Google Maps, or other online sources of information.</p>
+
+<p>Corrections were submitted through the manual corrections file. This should resolve the most
+egregious errors presently seen in this field.</p>
 
 <h4>What You Need</h4>
 
 <ol>
 <li><strong>PLUTO.</strong></li>
 <li><strong>Building Footprints</strong></li>
-</ol>
-
-<h4>Nice but not necessary</h4>
-<ol>
-<li>Domain tables of LandUse and BldgClass Code definitions.</li>
 </ol>
