@@ -1,13 +1,13 @@
 LandUse,def,lotarea_sum,replacement_sum,difference
-11,Vacant Land,19827730,5147687.0,14680043.0
-07,Transportation and Utility,71574803,63542228.0,8032575.0
-,NULL,6833982,3204918.0,3629064.0
-02,Multi-Family Walkup Buildings,10315334,9600931.0,714403.0
-01,One and Two Family Buildings,3832394,3598882.0,233512.0
-06,Industrial and Manufacturing,1857582,1818215.0,39367.0
-04,Mixed Residential and Commercial,3880530,3844679.0,35851.0
-05,Commercial and Office,3437460,3419895.0,17565.0
-10,Parking Facilities,1602393,1595008.0,7385.0
-03,Multi-Family Elevator Buildings,7001929,7019040.0,-17111.0
-08,Public Facilities and Institutions,12620915,12951204.0,-330289.0
-09,Open Space and Outdoor Recreation,34384636,50931135.0,-16546499.0
+11,Vacant Land,18421440,4487831.0,13933609.0
+7,Transportation and Utility,61649490,57810811.0,3838679.0
+,NULL,3948429,1916550.0,2031879.0
+2,Multi-Family Walkup Buildings,10461073,9748114.0,712959.0
+1,One and Two Family Buildings,3723184,3498858.0,224326.0
+3,Multi-Family Elevator Buildings,7670067,7567230.0,102837.0
+4,Mixed Residential and Commercial,4882329,4849565.0,32764.0
+6,Industrial and Manufacturing,1775769,1752958.0,22811.0
+10,Parking Facilities,1409762,1407242.0,2520.0
+5,Commercial and Office,3351808,3392685.0,-40877.0
+8,Public Facilities and Institutions,12827649,13154652.0,-327003.0
+9,Open Space and Outdoor Recreation,33228455,49032787.0,-15804332.0
